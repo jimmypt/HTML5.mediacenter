@@ -3,25 +3,44 @@
   <head>
     <meta charset="utf-8">
     <title>Media Center</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/fontello.css" />
+    <script type="text/javascript" src="js/script.js" ></script>
     <script>
       if (window.File && window.FileReader && window.FileList && window.Blob) {
+        /*
+        changeContent('load');
 
+        var xhr2 = new Xhr();
+        xhr2.open('GET', 'about.html', true);
+        xhr2.send();
+        xhr2.onload = function() {
+          document.getElementById('help').innerHTML = this.response;
+        }
+        */
       } else {
         alert('The File APIs are not fully supported in this browser.');
       }
     </script>
-    <div class="container">
-      <div class="header">
-        <ul>
-          <li><a href="movies.html">Movies</a></li>
-          <li><a href="insert.html">Load Movies</a></li>
-        </ul>
-      </div>
-      <div class="content">content</div>
-      <div class="footer">footer</div>
+  </head>
+  <body>
+    <header>
+      <ul class="menu">
+        <li class="block"><a class="links" onclick="changeContent('movies');"><span class="icon-video"></span>Movies</a></li>
+        <li class="block"><a class="links" onclick="changeContent('load');"><span class="icon-upload-1"></span>Load Movies</a></li>
+      </ul>
+    </header>
+    <div id="movies" class="container active">
+      movies
     </div>
+    <div id="load" class="container">
+      load
+    </div>
+    <footer>
+      <ul class="buttons"> 
+        <li class="block"><a class="btn">Save</a></li>
+      </ul>
+    </footer>
+    <div class="help" id="help">s</div>
   </body>
 </html>
