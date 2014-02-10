@@ -1,72 +1,111 @@
 //if (!supports_video()) { alert('Sorry, your browser does support video.\nBe reasonable and use Google Chrome.'); }
-document.addEventListener('keypress', function(evt) { 
-  switch(evt.keyCode){
-    case  63: /* ? */
-      document.getElementById("help").style.visibility = "visible";
-      break;
-    case 108: /* l */
-      changeContent('load');
-      break;
-    case 109: /* m */
-      changeContent('movies');
-      break;
-    case 113:  /* q */
-      document.getElementById("help").style.visibility = "hidden";
-      break;
-    default:
-      console.log("keyCode " + evt.keyCode + " not configured.");
-      break;
-  }
+var player = document.getElementById('video');
+document.addEventListener('keypress', function(evt) {
+    switch (evt.keyCode) {
+        case 32:  /* [space] */
+            if (player.paused) {
+                doPlay();
+            } else {
+                doPause();
+            }
+            break;
+        case 43:  /* + */
+            if (player.volume.toFixed(1) < 1.0) {
+                player.volume += 0.1;
+            }
+            break;
+        case 45:  /* - */
+            if (player.volume.toFixed(1) > 0.0) {
+                player.volume -= 0.1;
+            }
+            break;
+        case  63: /* ? */
+            document.getElementById("help").style.visibility = "visible";
+            break;
+        case 102:  /* f */
+            if (player.requestFullscreen) {
+                player.requestFullscreen();
+            } else if (player.mozRequestFullScreen) {
+                player.mozRequestFullScreen();
+            } else if (player.webkitRequestFullscreen) {
+                player.webkitRequestFullscreen();
+            } else if (player.msRequestFullscreen) {
+                player.msRequestFullscreen();
+            }
+            break;
+        case 108: /* l */
+            changeContent('load');
+            break;
+        case 109: /* m */
+            changeContent('movies');
+            break;
+        case 113:  /* q */
+            document.getElementById("help").style.visibility = "hidden";
+            break;
+        default:
+            console.log("keyCode " + evt.keyCode + " not configured.");
+            break;
+    }
 });
 
-function Xhr(){
+function doPlay() {
+    document.getElementsByTagName('header')[0].style.display = 'none';
+    player.play();
+}
+
+function doPause() {
+    document.getElementsByTagName('header')[0].style.display = 'inline-block';
+    player.pause();
+}
+
+function Xhr() {
 //    try{return new XMLHttpRequest();}catch(e){}try{return new ActiveXObject("Msxml3.XMLHTTP");}catch(e){}try{return new ActiveXObject("Msxml2.XMLHTTP.6.0");}catch(e){}try{return new ActiveXObject("Msxml2.XMLHTTP.3.0");}catch(e){}try{return new ActiveXObject("Msxml2.XMLHTTP");}catch(e){}try{return new ActiveXObject("Microsoft.XMLHTTP");}catch(e){}return null;
-    return  new XMLHttpRequest() || 
-            new ActiveXObject("Msxml3.XMLHTTP") || 
-            new ActiveXObject("Msxml2.XMLHTTP.6.0") || 
-            new ActiveXObject("Msxml2.XMLHTTP.3.0") || 
+    return  new XMLHttpRequest() ||
+            new ActiveXObject("Msxml3.XMLHTTP") ||
+            new ActiveXObject("Msxml2.XMLHTTP.6.0") ||
+            new ActiveXObject("Msxml2.XMLHTTP.3.0") ||
             new ActiveXObject("Msxml2.XMLHTTP") ||
-            new ActiveXObject("Microsoft.XMLHTTP") || 
+            new ActiveXObject("Microsoft.XMLHTTP") ||
             null;
 }
 
-function changeContent(page){
-  /*
-  var xhr = new Xhr();
-  xhr.open('GET', page + '.html', true);
-  xhr.send();
-  xhr.onload = function() {
-    document.getElementById('container').innerHTML = this.response;
-  }
-  */
-  alert(page);
+function changeContent(page) {
+    /*
+     var xhr = new Xhr();
+     xhr.open('GET', page + '.html', true);
+     xhr.send();
+     xhr.onload = function() {
+     document.getElementById('container').innerHTML = this.response;
+     }
+     */
+    alert(page);
 }
 
-function addToTable(files){
-  var output = [];
-  for (var i = 0, f; f = files[i]; i++) {
-    console.log(f);
-    output.push('<tr class="line"><td>', escape(f.name), '</td><td>', f.type || 'n/a', '</td><td>',
-      f.size, ' bytes</td><td>',
-      f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-      '</td></tr>');
-  }
-  document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+function addToTable(files) {
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) {
+        console.log(f);
+        output.push('<tr class="line"><td>', escape(f.name), '</td><td>', f.type || 'n/a', '</td><td>',
+                f.size, ' bytes</td><td>',
+                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                '</td></tr>');
+    }
+    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
 }
 function handleFileSelect(evt) {
-  alert("SELECT");
-  addToTable(evt.target.files);
+    alert("SELECT");
+    addToTable(evt.target.files);
 }
 function handleFileDrop(evt) {
-  alert("DROP");
-  evt.stopPropagation();     
-  evt.preventDefault();
+    alert("DROP");
+    evt.stopPropagation();
+    evt.preventDefault();
 
-  addToTable(evt.dataTransfer.files);
+    addToTable(evt.dataTransfer.files);
 }
 function handleDragOver(evt) {
-  alert("DRAGOVER");
-  evt.stopPropagation();
-  evt.preventDefault();
-  evt.dataTransfer.dropEffect = 'copy';
+    alert("DRAGOVER");
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'copy';
 }

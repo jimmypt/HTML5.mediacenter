@@ -1,46 +1,114 @@
 <!DOCTYPE html>
 <html lang="pt">
-  <head>
-    <meta charset="utf-8">
-    <title>Media Center</title>
-    <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" href="css/fontello.css" />
-    <script type="text/javascript" src="js/script.js" ></script>
-    <script>
-      if (window.File && window.FileReader && window.FileList && window.Blob) {
-        /*
-        changeContent('load');
+    <head>
+        <meta charset="utf-8">
+        <title>Media Center</title>
+        <link rel="stylesheet" href="css/styles.css" />
+        <link rel="stylesheet" href="css/fontello.css" />
+        <script>
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                /*
+                 changeContent('load');
+                 
+                 var xhr2 = new Xhr();
+                 xhr2.open('GET', 'about.html', true);
+                 xhr2.send();
+                 xhr2.onload = function() {
+                 document.getElementById('help').innerHTML = this.response;
+                 }
+                 */
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <ul class="menu">
+                <li class="block"><a class="links" href="#video"><span class="icon-video"></span>Video</a></li>
+                <li class="block"><a class="links" href="#movies"><span class="icon-video"></span>Movies</a></li>
+                <li class="block"><a class="links" href="#load"><span class="icon-upload-1"></span>Load Movies</a></li>
+            </ul>
+        </header>
+        <div id="container" class="container">
+            <div id="player" class="content">
+                <video controls class="video" id="video">
+                    <source src="/home/jimmy/workspace/Despicable.Me.avi" type="video/avi">
+                    <source src="/media/jimmy/d2-STUFF/MediaCenter/After.Earth.2013.720p.BluRay.x264-SPARKS.mkv" type='video/x-matroska; codecs="theora, vorbis"'>
+                    <source src="https://ia700408.us.archive.org/26/items/BigBuckBunny_328/BigBuckBunny_512kb.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div id="movies" class="content">
+                movies
+            </div>
+            <div id="load" class="content">
+                <div class="instructions">
+                    <p>
+                        Choose the files to load on your Media Center.
+                    </p>
+                    <p>
+                        You can select them from your file explorer.
+                    </p>
+                    <input type="file" id="files" name="files[]" multiple />
+                    <p>
+                        Or drop them in the box.
+                    </p>
+                    <div id="drop_zone">Drop files here</div>
+                </div>
+                <div>
+                    <table id="list" class="new_movies_list" >
+                    </table>
+                </div>
+            </div>
+            <script>
+                document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                var dropZone = document.getElementById('drop_zone');
+                dropZone.addEventListener('dragover', handleDragOver, false);
+                dropZone.addEventListener('drop', handleFileDrop, false);
+            </script>
+        </div>
+<!--        <footer>
+            <ul class="buttons"> 
+                <li class="block"><a class="btn">Save</a></li>
+            </ul>
+        </footer>-->
+        <div class="help" id="help">
+            <p class="title">Keyboard Shortcuts</p>
 
-        var xhr2 = new Xhr();
-        xhr2.open('GET', 'about.html', true);
-        xhr2.send();
-        xhr2.onload = function() {
-          document.getElementById('help').innerHTML = this.response;
-        }
-        */
-      } else {
-        alert('The File APIs are not fully supported in this browser.');
-      }
-    </script>
-  </head>
-  <body>
-    <header>
-      <ul class="menu">
-        <li class="block"><a class="links" onclick="changeContent('movies');"><span class="icon-video"></span>Movies</a></li>
-        <li class="block"><a class="links" onclick="changeContent('load');"><span class="icon-upload-1"></span>Load Movies</a></li>
-      </ul>
-    </header>
-    <div id="movies" class="container active">
-      movies
-    </div>
-    <div id="load" class="container">
-      load
-    </div>
-    <footer>
-      <ul class="buttons"> 
-        <li class="block"><a class="btn">Save</a></li>
-      </ul>
-    </footer>
-    <div class="help" id="help">s</div>
-  </body>
+            <p>
+                <span>?</span>: Show help (this page)<br />
+                <span>q</span>: Close this page<br />
+                <span>m</span>: Jump to the movies<br />
+                <span>l</span>: Go to the load page<br />
+            </p>
+
+            <p class="title">About the App</p>
+
+            <p>
+                HTML5 Media Center 
+            </p>
+
+            <p class="title">Author</p>
+
+            <p>
+                Walter Tavares
+            </p>
+
+            <p class="title">Things to know</p>
+
+            <p>
+            </p>
+
+            <p class="title">Used API</p>
+
+            <p>
+                JSON<br />
+                Media<br />
+                localStorage<br />
+                DragAndDrop<br />
+                FileReader<br />
+            </p>
+        </div>
+        <script type="text/javascript" src="js/script.js" ></script>
+    </body>
 </html>
