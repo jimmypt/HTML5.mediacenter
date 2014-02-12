@@ -42,6 +42,9 @@ document.addEventListener('keypress', function(evt) {
         case 113:  /* q */
             document.getElementById("help").style.visibility = "hidden";
             break;
+        case 118:  /* v */
+            changeContent('video');
+            break;
         default:
             console.log("keyCode " + evt.keyCode + " not configured.");
             break;
@@ -70,15 +73,7 @@ function Xhr() {
 }
 
 function changeContent(page) {
-    /*
-     var xhr = new Xhr();
-     xhr.open('GET', page + '.html', true);
-     xhr.send();
-     xhr.onload = function() {
-     document.getElementById('container').innerHTML = this.response;
-     }
-     */
-    alert(page);
+    location.href = "#" + page;
 }
 
 function addToTable(files) {
@@ -90,22 +85,20 @@ function addToTable(files) {
                 f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
                 '</td></tr>');
     }
-    document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+    document.getElementById('list').getElementsByTagName('tbody')[0].innerHTML = output.join('');
 }
 function handleFileSelect(evt) {
-    alert("SELECT");
     addToTable(evt.target.files);
 }
 function handleFileDrop(evt) {
-    alert("DROP");
     evt.stopPropagation();
     evt.preventDefault();
-
+    _wt(evt.target.getAttribute('id')).removeClass('dragover');
     addToTable(evt.dataTransfer.files);
 }
 function handleDragOver(evt) {
-    alert("DRAGOVER");
     evt.stopPropagation();
     evt.preventDefault();
+    _wt(evt.target.getAttribute('id')).addClass('dragover');
     evt.dataTransfer.dropEffect = 'copy';
 }

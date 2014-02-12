@@ -146,20 +146,16 @@ footer .buttons .block .btn:hover{
     color: #CCC;
     padding: 20px;
 }
+#drop_zone.dragover{ border: 2px dashed #CCC; }
 
-.new_movies_list{
-    width: 100%;
-}
-.new_movies_list .line{
 
-}
-.new_movies_list .line td{
-    padding: 10px;
-}
-.new_movies_list .line:nth-of-type(odd){
-    background-color: blue;
-}
+.new_movies_container { padding: 20px; }
+.new_movies_container .movies_list { width: 100%; border-spacing: 0; }
+.new_movies_container .movies_list .thead { font-size: 20px; font-style: italic; border: 2px solid #CCC; text-align: left; background-color: #292929; }
+.new_movies_container .movies_list .thead th { padding: 10px; }
+.new_movies_container .movies_list .line { }
+.new_movies_container .movies_list .line td { padding: 10px; border-bottom: 2px solid #CCC; }
+.new_movies_container .movies_list .line:nth-of-type(odd) { background-color: #444444; }
+.new_movies_container .movies_list .line:nth-of-type(even) { background-color: #555555; }
 
-.content .instructions{
-    padding: 20px;
-}
+.content .instructions{ padding: 20px; }
