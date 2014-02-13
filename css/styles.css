@@ -15,11 +15,12 @@ body{
 body, html {
   height: 100%;
 }
-.container{ height: 100%; }
-.content{ height: 100%; padding: 50px 0; }
+.container{ height: 100%; position: relative; }
+.content{ height: 100%; position: absolute; width: 100%; opacity: 0; }
+.content.active{ opacity: 1; }
 #movies{}
 #load{}
-#player{ text-align: center; padding: 0; }
+#player{ text-align: center; }
 .video{ width: 100%; height: 100%; }
 
 /***   HEADER   ***/

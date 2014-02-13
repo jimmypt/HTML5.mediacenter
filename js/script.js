@@ -1,5 +1,7 @@
 //if (!supports_video()) { alert('Sorry, your browser does support video.\nBe reasonable and use Google Chrome.'); }
 var player = document.getElementById('video');
+var movies = JSON.parse(localStorage.getItem('movies'));
+if(!movies){ movies = new Array(); }
 document.addEventListener('keypress', function(evt) {
     switch (evt.keyCode) {
         case 32:  /* [space] */
@@ -39,11 +41,11 @@ document.addEventListener('keypress', function(evt) {
         case 109: /* m */
             changeContent('movies');
             break;
+        case 112:  /* p */
+            changeContent('player');
+            break;
         case 113:  /* q */
             document.getElementById("help").style.visibility = "hidden";
-            break;
-        case 118:  /* v */
-            changeContent('video');
             break;
         default:
             console.log("keyCode " + evt.keyCode + " not configured.");
@@ -73,19 +75,47 @@ function Xhr() {
 }
 
 function changeContent(page) {
-    location.href = "#" + page;
+    /* Have to pass this to my fw - or try harder... */
+    var els = document.getElementsByClassName('content');
+    for (var i = 0; i < els.length; i++) {
+        els[i].className = els[i].className.replace('active', '');
+    }
+    _wt(page).addClass('active');
 }
 
 function addToTable(files) {
     var output = [];
     for (var i = 0, f; f = files[i]; i++) {
-        console.log(f);
+        addMovieToStorage(f);
+//        var movies = JSON.parse(localStorage.getItem('movies'));
+//        console.log(movies);
+//        if (movies) {
+//            for (var i = 0; i < movies.length; i++) {
+//                
+//            }
+//        }
+//        console.log(JSON.stringify(f));
+        //document.getElementById('video').innerHTML = '<source src="https://ia700408.us.archive.org/26/items/BigBuckBunny_328/BigBuckBunny_512kb.mp4" type="video/mp4">';
         output.push('<tr class="line"><td>', escape(f.name), '</td><td>', f.type || 'n/a', '</td><td>',
                 f.size, ' bytes</td><td>',
                 f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
                 '</td></tr>');
     }
     document.getElementById('list').getElementsByTagName('tbody')[0].innerHTML = output.join('');
+}
+function addMovieToStorage(file){
+    console.log('Start add movies')
+    if(!movies){
+        console.log('no movies');
+        movies = JSON.parse(localStorage.getItem('movies'));
+    }
+//    for (var i = 0; i < movies.length; i++) {
+//        
+//    }
+    movies.push(JSON.stringify(file));
+    localStorage.setItem('movies', JSON.stringify(movies));
+    console.log(movies)
+    console.log('End add movies')
 }
 function handleFileSelect(evt) {
     addToTable(evt.target.files);

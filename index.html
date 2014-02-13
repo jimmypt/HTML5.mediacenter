@@ -25,20 +25,18 @@
     <body>
         <header>
             <ul class="menu">
-                <li class="block"><a class="links" href="#video"><span class="icon-video"></span>Video</a></li>
-                <li class="block"><a class="links" href="#movies"><span class="icon-video"></span>Movies</a></li>
-                <li class="block"><a class="links" href="#load"><span class="icon-upload-1"></span>Load Movies</a></li>
+                <li class="block"><a class="links" onclick="changeContent('player')"><span class="icon-player"></span>Player</a></li>
+                <li class="block"><a class="links" onclick="changeContent('movies')"><span class="icon-video"></span>Movies</a></li>
+                <li class="block"><a class="links" onclick="changeContent('load')"><span class="icon-upload"></span>Load Movies</a></li>
             </ul>
         </header>
         <div id="container" class="container">
             <div id="player" class="content">
                 <video controls class="video" id="video">
-                    <source src="/home/jimmy/workspace/Despicable.Me.avi" type="video/avi">
-                    <source src="/media/jimmy/d2-STUFF/MediaCenter/After.Earth.2013.720p.BluRay.x264-SPARKS.mkv" type='video/x-matroska; codecs="theora, vorbis"'>
-                    <source src="https://ia700408.us.archive.org/26/items/BigBuckBunny_328/BigBuckBunny_512kb.mp4" type="video/mp4">
                 </video>
             </div>
-            <div id="movies" class="content">
+            <div id="movies" class="content active">
+                <br /><br /><br /><br /><br />
                 movies
             </div>
             <div id="load" class="content">
@@ -84,8 +82,8 @@
                 <span>?</span>: Show help (this page)<br />
                 <span>l</span>: Go to the load page<br />
                 <span>m</span>: Jump to the movies list<br />
+                <span>p</span>: Go to the player<br />
                 <span>q</span>: Close this help<br />
-                <span>v</span>: Go to the movie<br />
             </p>
 
             <p class="title">About the App</p>
@@ -103,6 +101,7 @@
             <p class="title">Things to know</p>
 
             <p>
+                Create own javascript framework
             </p>
 
             <p class="title">Used API</p>

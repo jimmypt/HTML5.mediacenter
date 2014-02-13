@@ -5,7 +5,7 @@ function _wt(id) {
         version: 0.1,
         author: "Walter Tavares",
         created: "February 2014",
-        updated: "02 February 2014",
+        updated: "February 2014",
         inspired_by: "http://www.mikedoesweb.com/2012/creating-your-own-javascript-library/"
     };
 
@@ -13,7 +13,13 @@ function _wt(id) {
         if (window === this) {
             return new _wt(id);
         }
-        this.e = document.getElementById(id);
+//        if (id.substring(0, 1) === '.') {
+//            this.e = document.getElementsByClassName(id.replace('.', ''));
+//        } else {
+            this.e = document.getElementById(id);
+//        }
+//        console.log(this.e);
+//        console.log(typeof this.e);
         return this;
     } else {
         return about;
@@ -23,7 +29,11 @@ function _wt(id) {
 
 _wt.prototype = {
     hide: function() {
-        this.e.style.display = 'none';
+//        if (this.e) {
+            this.e.style.display = 'none';
+//        } else {
+            
+//        }
         return this;
     },
     addClass: function(class_name) {
