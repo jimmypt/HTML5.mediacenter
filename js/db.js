@@ -70,7 +70,7 @@ wt_mediacenter.indexedDB.open = function() {
         wt_mediacenter.indexedDB.db = event.target.result;
         console.log(wt_mediacenter.indexedDB.db);
         // agora que abrimos a base de dados com sucesso, podemos ler o seu conteúdo
-        wt_mediacenter.indexedDB.getAllShoppingItems();
+        wt_mediacenter.indexedDB.getAllMovies();
     }
 
     request.onerror = wt_mediacenter.indexedDB.onerror;
@@ -82,9 +82,6 @@ wt_mediacenter.indexedDB.open = function() {
 wt_mediacenter.indexedDB.addItem = function(movie) {
     // referência à base de dados
     var db = wt_mediacenter.indexedDB.db;
-    if (!db) {
-        console.log('BOOUUMMMMM');
-    }
     // indicar que vai ser feito um acesso do tipo readwrite (leitura e escrita)
     var transaction = db.transaction(["movie"], "readwrite");
     // referência à objectStore
@@ -97,15 +94,14 @@ wt_mediacenter.indexedDB.addItem = function(movie) {
     // callback de sucesso ao request do tipo put que fizemos
     request.onsuccess = function(event) {
 
-        wt_mediacenter.indexedDB.getAllShoppingItems();
+        wt_mediacenter.indexedDB.getAllMovies();
     }
 
     request.onerror = wt_mediacenter.indexedDB.onerror;
 }
 
-wt_mediacenter.indexedDB.getAllShoppingItems = function() {
+wt_mediacenter.indexedDB.getAllMovies = function() {
     // limpar lista atual
-    console.log("GO CENAS");
     // referência local à db
     var db = wt_mediacenter.indexedDB.db;
     // transação de leitura
@@ -120,6 +116,7 @@ wt_mediacenter.indexedDB.getAllShoppingItems = function() {
     // referencia ao cursor - iterador que percorrerá toda a lista
     var cursor = objStore.openCursor(keysRange);
 
+    resetMoviesList();
     // callback de sucesso
     cursor.onsuccess = function(event) {
         var result = event.target.result;
@@ -129,7 +126,6 @@ wt_mediacenter.indexedDB.getAllShoppingItems = function() {
         }
 
         // chamar função de renderização de cada item
-        console.log(result.value.title);
         renderMovie(result.value);
         // pedir novo item ao cursor
         result.continue();
@@ -146,7 +142,7 @@ wt_mediacenter.indexedDB.deleteItem = function(id) {
     var request = objStore.delete(id);
 
     request.onsuccess = function(event) {
-        wt_mediacenter.indexedDB.getAllShoppingItems();
+        wt_mediacenter.indexedDB.getAllMovies();
     }
 
     request.onerror = wt_mediacenter.indexedDB.onerror;
@@ -160,24 +156,9 @@ wt_mediacenter.indexedDB.onerror = function(error) {
 
 
 // apenas para renderização
-var renderMovie = function renderMovie(movie) {
-    var movies_list = document.getElementById('movies_list');
-    var li = document.createElement('li');
-    var title = document.createTextNode(movie.title ? movie.title : movie.file);
-    li.appendChild(title);
-    movies_list.appendChild(li);
-}
+
 
 window.onload = function() {
-
     wt_mediacenter.indexedDB.open();
-    document.addEventListener('click', function(evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        console.log("GO CLICK");
-        wt_mediacenter.indexedDB.addItem(movie);
-        wt_mediacenter.indexedDB.addItem(movie2);
-        wt_mediacenter.indexedDB.addItem(movie3);
-        wt_mediacenter.indexedDB.addItem(movie4);
-    });
+//    wt_mediacenter.indexedDB.addItem(movie);
 }

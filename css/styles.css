@@ -1,59 +1,35 @@
 /*
 body{ font-family: Tahoma, Geneva, sans-serif; padding: 0; margin: 0; color: #FFFFFF; background-color: #222222; }
 */
-body{
-    margin: 0;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 20px;
-    color: #FFF;
-    background-color: #333333;
-    font-weight: lighter;
-    overflow: hidden;
-    min-height: 100%;
-}
-body, html {
-  height: 100%;
-}
+body{ margin: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #FFF; background-color: #333333; font-weight: lighter; overflow: hidden; min-height: 100%; }
+body, html { height: 100%; }
 .container{ height: 100%; position: relative; }
-.content{ height: 100%; position: absolute; width: 100%; opacity: 0; }
-.content.active{ opacity: 1; }
-#movies{}
+.content{ height: 100%; position: absolute; width: 100%; opacity: 0; z-index: -1 }
+.content.active{ opacity: 1; z-index: 1 }
+#movies{ top: 50px;}
 #load{}
 #player{ text-align: center; }
 .video{ width: 100%; height: 100%; }
 
+/***   LOADING   ***/
+#loading{ position: absolute; background-color: #000; opacity: .5; width: 100%; height: 100%; z-index: 10; }
+#loading #loading-content{ position: absolute; top: 50%; margin-top: -100px; left: 50%; margin-left: -60px; width: 200px; height: 120px; opacity: 1; text-align: center; color: #0099ff; }
+#loading #loading-content .icon{ font-size: 50px; }
+#loading #loading-content #pre-loading{ font-size: 30px; }
+
 /***   HEADER   ***/
-header{
-/*    background-image: linear-gradient(to bottom, #202020 50%, #000000 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, #202020), color-stop(1, #000000));
-    background-image: -o-linear-gradient(bottom, #202020 50%, #000000 100%);
-    background-image: -ms-linear-gradient(bottom, #202020 50%, #000000 100%);
-    background-image: -moz-linear-gradient(bottom, #202020 50%, #000000 100%);
-    background-image: -webkit-linear-gradient(bottom, #202020 50%, #000000 100%);*/
-    color: #4E4E4E;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    /*border-bottom: 1px solid #CCCCCC;*/
-    text-align: right;
-    z-index: 2;
-}
-header:hover .menu .block .links{ 
-    opacity: 1.0;
-}
+header{ color: #4E4E4E; position: fixed; top: 0; left: 0; right: 0; text-align: right; z-index: 2; }
+header:hover .menu .block .links{ opacity: 1.0; }
 header .menu{ list-style: none; display: inline-block; margin: 0; padding: 0; right: 0; }
 header .menu .block{ display: inline; }
 header .menu .block .links{ 
     opacity:0.5;
     color: #EEE;
-    height: 50px;
-    line-height: 50px;
     text-decoration: none;
-    font-size: 26px;
+    font-size: 16px;
+    line-height: 26px;
     text-shadow: 2px 2px #000000;
-    padding: 0px 10px;
+    padding: 10px;
     display: inline-block;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -66,52 +42,31 @@ header .menu .block .links{
     -o-transition: background-color 0.3s linear 0s, color 0.3s linear 0s, opacity 0.5s linear 0s;
     transition: background-color 0.3s linear 0s, color 0.3s linear 0s, opacity 0.5s linear 0s;
 }
-header .menu .block .links:hover{ 
-    background-color: #111111;
-    color: #286CFB;
-    cursor: pointer;
-}
+header .menu .block .links:hover{ background-color: #111111; color: #286CFB; color: #0099ff; cursor: pointer; }
+header .menu .block .links .icon{ font-size: 14px; }
 
 
 /***   FOOTER   ***/
 footer{
-    background-image: linear-gradient(to bottom, #202020 50%, #000000 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, #202020), color-stop(1, #000000));
-    background-image: -o-linear-gradient(bottom, #202020 50%, #000000 100%);
-    background-image: -ms-linear-gradient(bottom, #202020 50%, #000000 100%);
-    background-image: -moz-linear-gradient(bottom, #202020 50%, #000000 100%);
-    background-image: -webkit-linear-gradient(bottom, #202020 50%, #000000 100%);
     color: #4E4E4E;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     text-align: right;
-    border-top: 1px solid #CCCCCC;
     font-weight: lighter;
 }
-footer .buttons{ list-style: none; display: inline-block; margin: 0; padding: 0; right: 0; }
-footer .buttons .block{ display: inline; }
-footer .buttons .block .btn{ 
+footer .links{ 
     color: #EEE;
-    height: 50px;
-    line-height: 50px;
     text-decoration: none;
-    font-size: 26px;
+    font-size: 16px;
     text-shadow: 2px 2px #000000;
-    padding: 0px 10px;
+    padding: 10px;
     display: inline-block;
+    bottom: 20px;
 }
-footer .buttons .block .btn:hover{ 
-    background-image: linear-gradient(to bottom, #000000 10%, #202020 100%);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0.5, #000000), color-stop(1, #202020));
-    background-image: -o-linear-gradient(bottom, #000000 50%, #202020 100%);
-    background-image: -ms-linear-gradient(bottom, #000000 50%, #202020 100%);
-    background-image: -moz-linear-gradient(bottom, #000000 50%, #202020 100%);
-    background-image: -webkit-linear-gradient(bottom, #000000 50%, #202020 100%);
-    color: #286CFB;
-    cursor: pointer;
-}
+footer .links:hover{ color: #286CFB; cursor: pointer; }
+footer .links .icon{ font-size: 14px; }
 
 .help{
     margin: 10px;
@@ -131,22 +86,10 @@ footer .buttons .block .btn:hover{
     left: 10px;
     right: 10px;
 }
-.help .title{
-    font-size: 20px;
-    border-bottom: 1px solid #FFF;
-    font-weight: bold;
-}
-.help span{
-    color: #286CFB;
-    font-weight: bold;
-}
+.help .title{ font-size: 20px; border-bottom: 1px solid #FFF; font-weight: bold; }
+.help span{ color: #286CFB; font-weight: bold; }
 /***   CONTENT   ***/
-#drop_zone{
-    border: 2px solid #CCC;
-    border-radius: 10px;
-    color: #CCC;
-    padding: 20px;
-}
+#drop_zone{ border: 2px solid #CCC; border-radius: 10px; color: #CCC; padding: 20px; }
 #drop_zone.dragover{ border: 2px dashed #CCC; }
 
 

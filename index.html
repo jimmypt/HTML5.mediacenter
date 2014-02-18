@@ -5,6 +5,7 @@
         <title>Media Center</title>
         <link rel="stylesheet" href="css/styles.css" />
         <link rel="stylesheet" href="css/fontello.css" />
+        <link rel="stylesheet" href="css/animation.css" />
         <script>
             if (window.File && window.FileReader && window.FileList && window.Blob) {
                 /*
@@ -23,11 +24,17 @@
         </script>
     </head>
     <body>
+        <div id="loading">
+            <div id="loading-content">
+                <i class="icon icon-spin2 animate-spin"></i>
+                <p id="pre-loading">Loading...</p>
+            </div>
+        </div>
         <header>
             <ul class="menu">
-                <li class="block"><a class="links" onclick="changeContent('player')"><span class="icon-player"></span>Player</a></li>
-                <li class="block"><a class="links" onclick="changeContent('movies')"><span class="icon-video"></span>Movies</a></li>
-                <li class="block"><a class="links" onclick="changeContent('load')"><span class="icon-upload"></span>Load Movies</a></li>
+                <li class="block"><a class="links" onclick="changeContent('player')"><i class="icon icon-play"></i>Player</a></li>
+                <li class="block"><a class="links" onclick="changeContent('movies')"><i class="icon icon-video"></i>Movies</a></li>
+                <li class="block"><a class="links" onclick="changeContent('load')"><i class="icon icon-upload"></i>Load Movies</a></li>
             </ul>
         </header>
         <div id="container" class="container">
@@ -37,10 +44,10 @@
             </div>
             <div id="movies" class="content active">
                 <ul id="movies_list">
-                    <li>BLA</li>
-                    <li>BLA BLA</li>
-                    <li>BLA BLA BLA</li>
                 </ul>
+                <footer>
+                    <a class="links" onclick="refreshMoviesList()"><i class="icon icon-refresh"></i>Refresh</a>
+                </footer>
             </div>
             <div id="load" class="content">
                 <div class="instructions">
@@ -50,34 +57,28 @@
                     <p>
                         You can select them from your file explorer.
                     </p>
-                    <input type="file" id="files" name="files[]" multiple />
+                    <input type="file" id="files" name="files[]" multiple accept="video/*" />
                     <p>
                         Or drop them in the box.
                     </p>
                     <div id="drop_zone" class="batatas">Drop files here</div>
                 </div>
                 <div class="new_movies_container">
-                    <table id="list" class="movies_list" >
+                    <table id="loaded_list" class="movies_list" >
                         <thead class="thead">
                             <tr>
                                 <th>Title</th>
                                 <th>Type</th>
-                                <th>Size</th>
-                                <th>Modification Date</th>
+                                <th>Playable</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <!--        <footer>
-                    <ul class="buttons"> 
-                        <li class="block"><a class="btn">Save</a></li>
-                    </ul>
-                </footer>-->
         <div class="help" id="help">
             <p class="title">Keyboard Shortcuts</p>
 
@@ -104,12 +105,13 @@
             <p class="title">Things to know</p>
 
             <p>
-                Create own javascript framework
+                Using own javascript framework
             </p>
 
             <p class="title">Used API</p>
 
             <p>
+                IndexedDB<br />
                 JSON<br />
                 Media<br />
                 localStorage<br />
@@ -121,10 +123,10 @@
         <script type="text/javascript" src="js/script.js" ></script>
         <script type="text/javascript" src="js/db.js" ></script>
         <script>
-        document.getElementById('files').addEventListener('change', handleFileSelect, false);
-        var dropZone = document.getElementById('drop_zone');
-        dropZone.addEventListener('dragover', handleDragOver, false);
-        dropZone.addEventListener('drop', handleFileDrop, false);
+                        document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                        var dropZone = document.getElementById('drop_zone');
+                        dropZone.addEventListener('dragover', handleDragOver, false);
+                        dropZone.addEventListener('drop', handleFileDrop, false);
         </script>
     </body>
 </html>

@@ -1,7 +1,9 @@
 //if (!supports_video()) { alert('Sorry, your browser does support video.\nBe reasonable and use Google Chrome.'); }
 var player = document.getElementById('video');
 var movies = JSON.parse(localStorage.getItem('movies'));
-if(!movies){ movies = new Array(); }
+if (!movies) {
+    movies = new Array();
+}
 document.addEventListener('keypress', function(evt) {
     switch (evt.keyCode) {
         case 32:  /* [space] */
@@ -86,37 +88,18 @@ function changeContent(page) {
 function addToTable(files) {
     var output = [];
     for (var i = 0, f; f = files[i]; i++) {
-        addMovieToStorage(f);
-//        var movies = JSON.parse(localStorage.getItem('movies'));
-//        console.log(movies);
-//        if (movies) {
-//            for (var i = 0; i < movies.length; i++) {
-//                
-//            }
-//        }
-//        console.log(JSON.stringify(f));
-        //document.getElementById('video').innerHTML = '<source src="https://ia700408.us.archive.org/26/items/BigBuckBunny_328/BigBuckBunny_512kb.mp4" type="video/mp4">';
-        output.push('<tr class="line"><td>', escape(f.name), '</td><td>', f.type || 'n/a', '</td><td>',
-                f.size, ' bytes</td><td>',
-                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                '</td></tr>');
+        console.log(f);
+        var movie = {
+            title: f.name.replace(/\./g, ' '),
+            file: f.name,
+            type: f.type,
+            size: f.syze
+        };
+        wt_mediacenter.indexedDB.addItem(movie);
+        renderLoadedMovie(movie);
     }
-    document.getElementById('list').getElementsByTagName('tbody')[0].innerHTML = output.join('');
 }
-function addMovieToStorage(file){
-    console.log('Start add movies')
-    if(!movies){
-        console.log('no movies');
-        movies = JSON.parse(localStorage.getItem('movies'));
-    }
-//    for (var i = 0; i < movies.length; i++) {
-//        
-//    }
-    movies.push(JSON.stringify(file));
-    localStorage.setItem('movies', JSON.stringify(movies));
-    console.log(movies)
-    console.log('End add movies')
-}
+
 function handleFileSelect(evt) {
     addToTable(evt.target.files);
 }
@@ -131,4 +114,54 @@ function handleDragOver(evt) {
     evt.preventDefault();
     _wt(evt.target.getAttribute('id')).addClass('dragover');
     evt.dataTransfer.dropEffect = 'copy';
+}
+
+/* RENDER MOVIES LISTS */
+var resetMoviesList = function resetMoviesList() {
+    _wt('movies_list').html('');
+};
+var renderMovie = function renderMovie(movie) {
+    var movies_list = document.getElementById('movies_list');
+    var li = document.createElement('li');
+    var title = document.createTextNode(movie.title ? movie.title : movie.file);
+    li.appendChild(title);
+    movies_list.appendChild(li);
+};
+var renderLoadedMovie = function renderLoadedMovie(movie) {
+    var movies_list = document.getElementById('loaded_list');
+    var tr = document.createElement('tr');
+    tr.className = 'line';
+
+    /* Title */
+    var td = document.createElement('td');
+    var title = document.createTextNode(movie.title ? movie.title : movie.file);
+    td.appendChild(title);
+    tr.appendChild(td);
+
+    /* type */
+    td = document.createElement('td');
+    var type = document.createTextNode(movie.type);
+    td.appendChild(type);
+    tr.appendChild(td);
+
+    /* Playable */
+    td = document.createElement('td');
+    var video = document.querySelector('video');
+    console.log(video);
+    var playable = video.canPlayType(movie.type);
+    var playable = document.createTextNode(playable === '' ? 'Format not suported' : playable);
+    td.appendChild(playable);
+    tr.appendChild(td);
+
+    movies_list.appendChild(tr);
+};
+var refreshMoviesList = function refreshMoviesList() {
+    alert('Do the refresh Movies list!!!!!!');
+
+}
+var showLoading = function showLoading() {
+    
+}
+var hideLoading = function hideLoading() {
+
 }
