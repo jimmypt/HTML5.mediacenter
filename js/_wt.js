@@ -28,23 +28,18 @@ function _wt(id) {
 ;
 
 _wt.prototype = {
-    hide: function() {
-//        if (this.e) {
-        this.e.style.display = 'none';
-        this.e.style.zIndex = -1;
-//        } else {
-
-//        }
-        return this;
-    },
     addClass: function(class_name) {
         if (this.e.className.indexOf(class_name) === -1) {
             this.e.className += ' ' + class_name;
         }
         return this;
     },
-    removeClass: function(class_name) {
-        this.e.className = this.e.className.replace(class_name, '');
+    hide: function() {
+//        if (this.e) {
+        this.e.style.display = 'none';
+//        } else {
+
+//        }
         return this;
     },
     html: function() {
@@ -52,6 +47,14 @@ _wt.prototype = {
             return this.e.innerHTML;
         }
         this.e.innerHTML = arguments[0];
+        return this;
+    },
+    removeClass: function(class_name) {
+        this.e.className = this.e.className.replace(class_name, '');
+        return this;
+    },
+    show: function() {
+        this.e.style.display = 'block';
         return this;
     }
 };

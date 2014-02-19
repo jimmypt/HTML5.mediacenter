@@ -93,9 +93,10 @@ function addToTable(files) {
             title: f.name.replace(/\./g, ' '),
             file: f.name,
             type: f.type,
-            size: f.syze
+            size: f.size,
+            data: JSON.stringify(f)
         };
-        wt_mediacenter.indexedDB.addItem(movie);
+        wt_mediacenter.indexedDB.addMovie(movie);
         renderLoadedMovie(movie);
     }
 }
@@ -120,11 +121,37 @@ function handleDragOver(evt) {
 var resetMoviesList = function resetMoviesList() {
     _wt('movies_list').html('');
 };
+var renderAllMovies = function renderAllMovies() {
+    var movies = wt_mediacenter.indexedDB.getAllMovies();
+    var keysRange = IDBKeyRange.lowerBound(0);
+
+    var cursor = movies.openCursor(keysRange);
+
+    resetMoviesList();
+    cursor.onsuccess = function(event) {
+        var result = event.target.result;
+        if (!!result == false) {
+            return;
+        }
+        renderMovie(result.value);
+        result.continue();
+    };
+};
 var renderMovie = function renderMovie(movie) {
     var movies_list = document.getElementById('movies_list');
     var li = document.createElement('li');
+    li.className = 'movie';
     var title = document.createTextNode(movie.title ? movie.title : movie.file);
-    li.appendChild(title);
+//    if (movie.poster) {
+//        var img = document.createElement('img');
+//        img.setAttribute('src', movie.poster);
+//        img.setAttribute('width', '100px');
+//        li.appendChild(img);
+//    }
+    var a = document.createElement('a');
+    a.setAttribute('onclick', 'loadVideo("' + movie.file + '")');
+    a.appendChild(title);
+    li.appendChild(a);
     movies_list.appendChild(li);
 };
 var renderLoadedMovie = function renderLoadedMovie(movie) {
@@ -156,12 +183,69 @@ var renderLoadedMovie = function renderLoadedMovie(movie) {
     movies_list.appendChild(tr);
 };
 var refreshMoviesList = function refreshMoviesList() {
-    alert('Do the refresh Movies list!!!!!!');
+    showLoading();
+    var movies = wt_mediacenter.indexedDB.getAllMovies();
+    var keysRange = IDBKeyRange.lowerBound(0);
 
+    var cursor = movies.openCursor(keysRange);
+
+    resetMoviesList();
+    cursor.onsuccess = function(event) {
+        var result = event.target.result;
+        if (!!result == false) {
+            return;
+        }
+        var movie = result.value;
+        if (!movie.title) {
+            movie.title = movieSanitizeTitle(movie.file);
+        }
+        console.log(movie.title);
+
+        setTimeout(movieGetImdbData(movie), 5000);
+
+        wt_mediacenter.indexedDB.addMovie(movie);
+        renderMovie(movie);
+        result.continue();
+    };
+
+    hideLoading();
+};
+
+var movieGetImdbData = function movieGetImdbData(movie) {
+    var stay = true;
+    i = 1;
+    var title = movie.title;
+    while (stay) {
+        var xhr = new Xhr();
+        xhr.open('GET', 'http://www.omdbapi.com/?t=' + title, false);
+        xhr.send();
+        var response = JSON.parse(xhr.response);
+        if (response.Response === 'True') {
+            stay = false;
+            movie.title = response.Title;
+            movie.poster = response.Poster;
+        }
+
+        var pos = title.lastIndexOf(' ');
+        title = title.substr(0, pos);
+        stay = pos < 0 ? false : stay;
+    }
+    return movie;
 }
+var movieSanitizeTitle = function movieSanitizeTitle(title) {
+    return title.replace(/[\.\_]/g, ' ');
+};
+
+var loadVideo = function loadVideo(filename) {
+    console.log("loading Video: "+filename);
+    wt_mediacenter.indexedDB.findMovie(filename);
+        
+}
+
+
 var showLoading = function showLoading() {
-    
-}
+    _wt('loading').show();
+};
 var hideLoading = function hideLoading() {
-
-}
+    _wt('loading').hide();
+};
