@@ -85,6 +85,7 @@ footer .links .icon{ font-size: 14px; }
     top: 10px;
     left: 10px;
     right: 10px;
+    overflow: auto;
 }
 .help .title{ font-size: 20px; border-bottom: 1px solid #FFF; font-weight: bold; }
 .help span{ color: #286CFB; font-weight: bold; }

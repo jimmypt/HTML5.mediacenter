@@ -142,12 +142,12 @@ var renderMovie = function renderMovie(movie) {
     var li = document.createElement('li');
     li.className = 'movie';
     var title = document.createTextNode(movie.title ? movie.title : movie.file);
-//    if (movie.poster) {
-//        var img = document.createElement('img');
-//        img.setAttribute('src', movie.poster);
-//        img.setAttribute('width', '100px');
-//        li.appendChild(img);
-//    }
+    if (movie.poster) {
+        var img = document.createElement('img');
+        img.setAttribute('src', '/image.php?url='+movie.poster);
+        img.setAttribute('width', '100px');
+        li.appendChild(img);
+    }
     var a = document.createElement('a');
     a.setAttribute('onclick', 'loadVideo("' + movie.file + '")');
     a.appendChild(title);

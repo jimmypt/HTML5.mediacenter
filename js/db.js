@@ -1,29 +1,3 @@
-var movie = {
-    title: "Title Movie",
-    year: "6546",
-    file: "my.movie.file.mp4",
-    type: "video/mp4"
-};
-var movie2 = {
-    title: "Another Movie",
-    year: "2014",
-    file: "another.movie.file.mp4",
-    type: "video/mp4"
-};
-var movie3 = {
-    title: "Last Movie",
-    year: "1234",
-    file: "last.movie.file.mp4",
-    type: "video/mp4"
-};
-var movie4 = {
-    title: "Shitty Movie",
-    year: "1234",
-    file: "shitty.movie.file.mp4",
-    type: "video/mp4"
-};
-
-
 var wt_mediacenter = {};
 wt_mediacenter.indexedDB = {};
 
@@ -89,7 +63,6 @@ wt_mediacenter.indexedDB.findMovie = function(id) {
             console.log(file);
             var url = URL.createObjectURL(file);
             document.getElementById('video').src = url;
-            return;
         }
         result.continue();
     };
