@@ -106,4 +106,9 @@ footer .links .icon{ font-size: 14px; }
 .content .instructions{ padding: 20px; }
 
 #movies_list { list-style: none; width: 100%; float: left; }
-#movies_list .movie{ list-style: none; display: inline; width: 100px; float: left; margin: 5px; }
+#movies_list .movie { list-style: none; display: inline; width: 150px; height: 267px; overflow: hidden; float: left; margin: 5px; }
+#movies_list .movie img { width: 150px; height: 222px; }
+#movies_list .movie:hover { box-shadow: 0 0 5px 6px #666; background-color: #666; cursor: pointer; }
+#movies_list .movie .delete.icon-trash { -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; margin-left: 5px; }
+#movies_list .movie .delete.icon-trash:hover { background-color: #333; }
+#movies_list .movie .delete.icon-trash:before { width: 11px; height: 15px; line-height: 15px; }

@@ -46,11 +46,15 @@ wt_mediacenter.indexedDB.getAllMovies = function() {
 };
 
 wt_mediacenter.indexedDB.findMovie = function(id) {
-    console.log("Searching for " + id);
+//    console.log("Searching for " + id);
     var movies = wt_mediacenter.indexedDB.getAllMovies();
     var keysRange = IDBKeyRange.lowerBound(0);
 
     var cursor = movies.openCursor(keysRange);
+
+    var cenas = null;
+//    console.log("ANTES");
+//    console.log(cenas);
 
     cursor.onsuccess = function(event) {
         var result = event.target.result;
@@ -59,13 +63,16 @@ wt_mediacenter.indexedDB.findMovie = function(id) {
         }
         console.log("Result key is " + result.key);
         if (result.key === id) {
+//            cenas = JSON.parse(result.value.data);
             var file = JSON.parse(result.value.data);
-            console.log(file);
+//            console.log(file);
             var url = URL.createObjectURL(file);
             document.getElementById('video').src = url;
         }
         result.continue();
     };
+//    console.log("DEPOIS");
+//    console.log(cenas);
 };
 wt_mediacenter.indexedDB.deleteMovie = function(id) {
     var db = wt_mediacenter.indexedDB.db;

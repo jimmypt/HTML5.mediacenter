@@ -139,19 +139,25 @@ var renderAllMovies = function renderAllMovies() {
 };
 var renderMovie = function renderMovie(movie) {
     var movies_list = document.getElementById('movies_list');
+
     var li = document.createElement('li');
     li.className = 'movie';
+    li.setAttribute('onclick', 'loadVideo("' + movie.file + '")');
+
+    var img = document.createElement('img');
+    img.setAttribute('src', '/image.php?url=' + movie.poster);
+    li.appendChild(img);
+
     var title = document.createTextNode(movie.title ? movie.title : movie.file);
-    if (movie.poster) {
-        var img = document.createElement('img');
-        img.setAttribute('src', '/image.php?url='+movie.poster);
-        img.setAttribute('width', '100px');
-        li.appendChild(img);
-    }
+    var span = document.createElement('span');
+    span.appendChild(title);
+    li.appendChild(span);
+
     var a = document.createElement('a');
-    a.setAttribute('onclick', 'loadVideo("' + movie.file + '")');
-    a.appendChild(title);
+    a.className = 'delete icon-trash';
+    a.setAttribute('onclick', 'deleteMovie("' + movie.file + '")');
     li.appendChild(a);
+
     movies_list.appendChild(li);
 };
 var renderLoadedMovie = function renderLoadedMovie(movie) {
@@ -237,10 +243,12 @@ var movieSanitizeTitle = function movieSanitizeTitle(title) {
 };
 
 var loadVideo = function loadVideo(filename) {
-    console.log("loading Video: "+filename);
     wt_mediacenter.indexedDB.findMovie(filename);
-        
-}
+};
+
+var deleteMovie = function deleteMovie(id) {
+    wt_mediacenter.indexedDB.deleteMovie(id);
+};
 
 
 var showLoading = function showLoading() {
