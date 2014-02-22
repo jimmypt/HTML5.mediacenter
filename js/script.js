@@ -1,6 +1,7 @@
 //if (!supports_video()) { alert('Sorry, your browser does support video.\nBe reasonable and use Google Chrome.'); }
 var player = document.getElementById('video');
 var movies = JSON.parse(localStorage.getItem('movies'));
+var hack_movie_files = {};
 if (!movies) {
     movies = new Array();
 }
@@ -13,35 +14,29 @@ document.addEventListener('keypress', function(evt) {
                 doPause();
             }
             break;
+        case 42:  /* * */
+            doVolumeOff();
+            break;
         case 43:  /* + */
             if (player.volume.toFixed(1) < 1.0) {
                 player.volume += 0.1;
             }
             break;
         case 45:  /* - */
-            if (player.volume.toFixed(1) > 0.0) {
-                player.volume -= 0.1;
-            }
+            doVolumeDown();
             break;
         case  63: /* ? */
             document.getElementById("help").style.visibility = "visible";
             break;
         case 102:  /* f */
-            if (player.requestFullscreen) {
-                player.requestFullscreen();
-            } else if (player.mozRequestFullScreen) {
-                player.mozRequestFullScreen();
-            } else if (player.webkitRequestFullscreen) {
-                player.webkitRequestFullscreen();
-            } else if (player.msRequestFullscreen) {
-                player.msRequestFullscreen();
-            }
+            doFullscreen();
             break;
         case 108: /* l */
             changeContent('load');
             break;
         case 109: /* m */
             changeContent('movies');
+            refreshMoviesList();
             break;
         case 112:  /* p */
             changeContent('player');
@@ -55,18 +50,51 @@ document.addEventListener('keypress', function(evt) {
     }
 });
 
-function doPlay() {
-    document.getElementsByTagName('header')[0].style.display = 'none';
-    player.play();
-}
-
-function doPause() {
-    document.getElementsByTagName('header')[0].style.display = 'inline-block';
+var doPlay = function doPlay() {
+    if (player.src != '') {
+        _wt('header').hide();
+        _wt('controls').hide();
+        player.play();
+    }
+};
+var doPause = function doPause() {
+    _wt('header').show();
+    _wt('controls').show();
     player.pause();
-}
+};
+var doStop = function doStop() {
+    _wt('header').show();
+    _wt('controls').show();
+    player.pause();
+    player.currentTime = 0;
+};
+var doFullscreen = function doFullscreen() {
+    if (player.requestFullscreen) {
+        player.requestFullscreen();
+    } else if (player.mozRequestFullScreen) {
+        player.mozRequestFullScreen();
+    } else if (player.webkitRequestFullscreen) {
+        player.webkitRequestFullscreen();
+    } else if (player.msRequestFullscreen) {
+        player.msRequestFullscreen();
+    }
+};
+var doVolumeOff = function doVolumeOff() {
+    player.volume = 0;
+};
+var doVolumeDown = function doVolumeDown() {
+    if (player.volume.toFixed(1) > 0.0) {
+        player.volume -= 0.1;
+    }
+};
+var doVolumeUp = function doVolumeUp() {
+    if (player.volume.toFixed(1) > 0.0) {
+        player.volume -= 0.1;
+    }
+};
+
 
 function Xhr() {
-//    try{return new XMLHttpRequest();}catch(e){}try{return new ActiveXObject("Msxml3.XMLHTTP");}catch(e){}try{return new ActiveXObject("Msxml2.XMLHTTP.6.0");}catch(e){}try{return new ActiveXObject("Msxml2.XMLHTTP.3.0");}catch(e){}try{return new ActiveXObject("Msxml2.XMLHTTP");}catch(e){}try{return new ActiveXObject("Microsoft.XMLHTTP");}catch(e){}return null;
     return  new XMLHttpRequest() ||
             new ActiveXObject("Msxml3.XMLHTTP") ||
             new ActiveXObject("Msxml2.XMLHTTP.6.0") ||
@@ -77,7 +105,6 @@ function Xhr() {
 }
 
 function changeContent(page) {
-    /* Have to pass this to my fw - or try harder... */
     var els = document.getElementsByClassName('content');
     for (var i = 0; i < els.length; i++) {
         els[i].className = els[i].className.replace('active', '');
@@ -88,14 +115,15 @@ function changeContent(page) {
 function addToTable(files) {
     var output = [];
     for (var i = 0, f; f = files[i]; i++) {
-        console.log(f);
         var movie = {
             title: f.name.replace(/\./g, ' '),
             file: f.name,
             type: f.type,
             size: f.size,
-            data: JSON.stringify(f)
+//            data: JSON.stringify(f),
+            url: URL.createObjectURL(f)
         };
+        hack_movie_files[f.name] = f;
         wt_mediacenter.indexedDB.addMovie(movie);
         renderLoadedMovie(movie);
     }
@@ -180,7 +208,6 @@ var renderLoadedMovie = function renderLoadedMovie(movie) {
     /* Playable */
     td = document.createElement('td');
     var video = document.querySelector('video');
-    console.log(video);
     var playable = video.canPlayType(movie.type);
     var playable = document.createTextNode(playable === '' ? 'Format not suported' : playable);
     td.appendChild(playable);
@@ -189,7 +216,6 @@ var renderLoadedMovie = function renderLoadedMovie(movie) {
     movies_list.appendChild(tr);
 };
 var refreshMoviesList = function refreshMoviesList() {
-    showLoading();
     var movies = wt_mediacenter.indexedDB.getAllMovies();
     var keysRange = IDBKeyRange.lowerBound(0);
 
@@ -205,7 +231,6 @@ var refreshMoviesList = function refreshMoviesList() {
         if (!movie.title) {
             movie.title = movieSanitizeTitle(movie.file);
         }
-        console.log(movie.title);
 
         setTimeout(movieGetImdbData(movie), 5000);
 
@@ -214,7 +239,6 @@ var refreshMoviesList = function refreshMoviesList() {
         result.continue();
     };
 
-    hideLoading();
 };
 
 var movieGetImdbData = function movieGetImdbData(movie) {
@@ -244,16 +268,11 @@ var movieSanitizeTitle = function movieSanitizeTitle(title) {
 
 var loadVideo = function loadVideo(filename) {
     wt_mediacenter.indexedDB.findMovie(filename);
+    player.src = URL.createObjectURL(hack_movie_files[filename]);
+    changeContent('player');
+    doPlay();
 };
 
 var deleteMovie = function deleteMovie(id) {
     wt_mediacenter.indexedDB.deleteMovie(id);
-};
-
-
-var showLoading = function showLoading() {
-    _wt('loading').show();
-};
-var hideLoading = function hideLoading() {
-    _wt('loading').hide();
 };

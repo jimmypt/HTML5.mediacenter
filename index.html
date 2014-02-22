@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt" manifest="manifest.appcache">
     <head>
         <meta charset="utf-8">
         <title>Media Center</title>
@@ -8,29 +8,14 @@
         <link rel="stylesheet" href="css/animation.css" />
         <script>
             if (window.File && window.FileReader && window.FileList && window.Blob) {
-                /*
-                 changeContent('load');
-                 
-                 var xhr2 = new Xhr();
-                 xhr2.open('GET', 'about.html', true);
-                 xhr2.send();
-                 xhr2.onload = function() {
-                 document.getElementById('help').innerHTML = this.response;
-                 }
-                 */
+
             } else {
                 alert('The File APIs are not fully supported in this browser.');
             }
         </script>
     </head>
     <body> 
-        <div id="loading" onclick="alert(document.readyState)">
-            <div id="loading-content">
-                <i class="icon icon-spin2 animate-spin"></i>
-                <p id="pre-loading">Loading...</p>
-            </div>
-        </div>
-        <header>
+        <header id="header">
             <ul class="menu">
                 <li class="block"><a class="links" onclick="changeContent('player')"><i class="icon icon-play"></i>Player</a></li>
                 <li class="block"><a class="links" onclick="changeContent('movies')"><i class="icon icon-video"></i>Movies</a></li>
@@ -39,13 +24,21 @@
         </header>
         <div id="container" class="container">
             <div id="player" class="content">
-                <video controls class="video" id="video">
+                <video class="video" id="video" onmousemove="_wt('controls').show()" onmouseout="_wt('controls').hide()">
                 </video>
+                <div id="controls" onmouseover="_wt('controls').show()">
+                    <i class="icon icon-stop" onclick="doStop()"></i>
+                    <i class="icon icon-play" onclick="doPlay()"></i>
+                    <i class="icon icon-pause" onclick="doPause()"></i>
+                    <i class="icon icon-resize-full" onclick="doFullscreen()"></i>
+                    <i class="icon icon-volume-off" onclick="doVolumeOff()"></i>
+                    <i class="icon icon-volume-down" onclick="doVolumeDown()"></i>
+                    <i class="icon icon-volume-up" onclick="doVolumeUp()"></i>
+                </div>
             </div>
             <div id="movies" class="content active">
-                https://developer.mozilla.org/en-US/docs/Web/API/window.onscroll
-                <ul id="movies_list" onscroll="console.log('scrow....')">
-                    
+                <ul id="movies_list">
+
                 </ul>
                 <footer>
                     <a class="links" onclick="refreshMoviesList()"><i class="icon icon-refresh"></i>Refresh</a>
@@ -90,6 +83,12 @@
                 <span>m</span>: Jump to the movies list<br />
                 <span>p</span>: Go to the player<br />
                 <span>q</span>: Close this help<br />
+                Player commands<br />
+                <span>Space</span>: Play / pause de player<br />
+                <span>+</span>: Volume Up<br />
+                <span>-</span>: Volume Down<br />
+                <span>*</span>: Volume Off<br />
+                <span>f</span>: Fullscreen<br />
             </p>
 
             <p class="title">About the App</p>
@@ -116,7 +115,7 @@
             <p>
                 IndexedDB<br />
                 JSON<br />
-                Media<br />
+                Video<br />
                 DragAndDrop<br />
                 FileReader<br />
             </p>

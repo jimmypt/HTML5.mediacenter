@@ -2,7 +2,7 @@
 
 $ua = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
 $ch = curl_init();
-$url = $_GET['url'] == 'N/A' ? $_SERVER['HTTP_HOST']."/images/no-poster.jpg" : $_GET['url'];
+$url = $_GET['url'] == 'N/A' || $_GET['url'] == 'undefined' ? $_SERVER['HTTP_HOST']."/images/no-poster.jpg" : $_GET['url'];
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_USERAGENT, $ua);

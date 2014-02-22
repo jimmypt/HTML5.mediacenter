@@ -13,13 +13,7 @@ function _wt(id) {
         if (window === this) {
             return new _wt(id);
         }
-//        if (id.substring(0, 1) === '.') {
-//            this.e = document.getElementsByClassName(id.replace('.', ''));
-//        } else {
         this.e = document.getElementById(id);
-//        }
-//        console.log(this.e);
-//        console.log(typeof this.e);
         return this;
     } else {
         return about;
@@ -35,11 +29,7 @@ _wt.prototype = {
         return this;
     },
     hide: function() {
-//        if (this.e) {
         this.e.style.display = 'none';
-//        } else {
-
-//        }
         return this;
     },
     html: function() {

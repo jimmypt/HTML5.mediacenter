@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'fontello';
-  src: url('../font/fontello.eot?9428151');
-  src: url('../font/fontello.eot?9428151#iefix') format('embedded-opentype'),
-       url('../font/fontello.woff?9428151') format('woff'),
-       url('../font/fontello.ttf?9428151') format('truetype'),
-       url('../font/fontello.svg?9428151#fontello') format('svg');
+  src: url('../font/fontello.eot?4891127');
+  src: url('../font/fontello.eot?4891127#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff?4891127') format('woff'),
+       url('../font/fontello.ttf?4891127') format('truetype'),
+       url('../font/fontello.svg?4891127#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,7 +14,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../font/fontello.svg?9428151#fontello') format('svg');
+    src: url('../font/fontello.svg?4891127#fontello') format('svg');
   }
 }
 */
@@ -50,7 +50,7 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
-.icon-spin2:before { content: '\e811'; } /* '' */
+.icon-spin:before { content: '\e811'; } /* '' */
 .icon-fast-bw:before { content: '\e807'; } /* '' */
 .icon-videocam:before { content: '\e80e'; } /* '' */
 .icon-upload:before { content: '\e80d'; } /* '' */
@@ -58,8 +58,9 @@
 .icon-volume-off:before { content: '\e809'; } /* '' */
 .icon-volume-down:before { content: '\e80a'; } /* '' */
 .icon-volume-up:before { content: '\e80b'; } /* '' */
-.icon-refresh:before { content: '\e810'; } /* '' */
+.icon-resize-full:before { content: '\e812'; } /* '' */
 .icon-video:before { content: '\e80c'; } /* '' */
+.icon-play:before { content: '\e800'; } /* '' */
 .icon-stop:before { content: '\e801'; } /* '' */
 .icon-pause:before { content: '\e802'; } /* '' */
 .icon-to-end:before { content: '\e803'; } /* '' */
@@ -67,4 +68,4 @@
 .icon-to-start:before { content: '\e805'; } /* '' */
 .icon-to-start-alt:before { content: '\e806'; } /* '' */
 .icon-fast-fw:before { content: '\e808'; } /* '' */
-.icon-play:before { content: '\e800'; } /* '' */
+.icon-refresh:before { content: '\e810'; } /* '' */
